@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import 'antd/dist/antd.css'
 import './App.css';
 import Login from './userLogin/login'
@@ -7,11 +7,11 @@ import Login from './userLogin/login'
 function App() {
   return (
     <Switch>
-      <Route path='/' exact>
-
-      </Route>
       <Route path='/login'>
         <Login />
+      </Route>
+      <Route path='/' exact>
+        <Redirect from='/' to='/login' />
       </Route>
     </Switch>
   );
