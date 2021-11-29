@@ -2,8 +2,11 @@
 import React, { useState } from 'react'
 import './login.css'
 import { Button, Form, Input } from 'antd'
+import { useHistory } from "react-router-dom";
+import { onLogin } from '../cookie/cookie'
 
 export default function Login() {
+    const history = useHistory()
     const [currentViewVal, setCurrentViewVal] = useState('signUp')
     // const [rootName, setRootName]: any = useState([])
     const changeView = (view: any) => {
@@ -19,6 +22,10 @@ export default function Login() {
             case 'logIn':
                 console.log('登录')
                 console.log(`用户名：${e.loginUsername}，密码：${e.loginPassword}`)
+                onLogin(e)
+                if (onLogin(e) === 1) {
+                    history.push('/index')
+                }
                 break;
             case 'PWReset':
                 console.log('重置密码')
