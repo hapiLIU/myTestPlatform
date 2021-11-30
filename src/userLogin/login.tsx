@@ -1,9 +1,9 @@
 // import axios from 'axios'
 import React, { useState } from 'react'
+import { OnLogin, OnReg, UserList } from '../cookie/cookie'
 import './login.css'
 import { Button, Form, Input } from 'antd'
 import { useHistory } from "react-router-dom";
-import { onLogin } from '../cookie/cookie'
 
 export default function Login() {
     const history = useHistory()
@@ -12,18 +12,21 @@ export default function Login() {
     const changeView = (view: any) => {
         setCurrentViewVal(view)
     }
-    // console.log(currentViewVal)
-    const finish = (e: any) => {
+    const finish = async (e: any) => {
         switch (currentViewVal) {
             case 'signUp':
                 console.log('注册')
                 console.log(`用户名：${e.signUsername}，密码：${e.signPassword}，邮箱：${e.signEmail}`)
+                console.log(await OnReg(e))
+                // if (await OnReg(e) == 1) { changeView('logIn') }
+                // if (await OnReg(e) === '0') {
+                //     console.log('12323')
+                // }
                 break;
             case 'logIn':
-                console.log('登录')
-                console.log(`用户名：${e.loginUsername}，密码：${e.loginPassword}`)
-                onLogin(e)
-                if (onLogin(e) === 1) {
+                // console.log('登录')
+                // console.log(`用户名：${e.loginUsername}，密码：${e.loginPassword}`)
+                if (await OnLogin(e) === 1) {
                     history.push('/index')
                 }
                 break;
@@ -33,7 +36,21 @@ export default function Login() {
                 break;
         }
     }
-
+    //注册判断用户名是否已存在
+    const [inpStatu, setInpStatu]: any = useState({ statu: 'success', message: '' })
+    const inputBlur = async (e: any) => {
+        let val = e.target.value
+        let userList = await UserList()
+        // eslint-disable-next-line
+        let filter = userList.filter((e: any) => {
+            if (e.uname === val) return e
+        })
+        if (filter.length > 0) {
+            setInpStatu({ statu: 'error', message: '用户名重复' })
+        } else {
+            setInpStatu({ statu: 'success', message: '' })
+        }
+    }
     const CurrentView = () => {
         switch (currentViewVal) {
             case "signUp":
@@ -45,10 +62,10 @@ export default function Login() {
                         onFinish={finish}
                     >
                         <h2>注 册 !</h2>
-                        <Form.Item label='用户名' name='signUsername' rules={[{ required: true, message: '请输入需要注册的用户名！' }]}>
-                            <Input placeholder='请输入用户名' />
+                        <Form.Item label='用户名' name='signUsername' rules={[{ required: true, message: '请输入需要注册的用户名！' }]} validateStatus={inpStatu.statu} help={inpStatu.message}>
+                            <Input placeholder='请输入用户名' onBlur={inputBlur} />
                         </Form.Item>
-                        <Form.Item label='邮箱' name='signEmail' rules={[{ required: true, message: '请输入邮箱！' }]}>
+                        <Form.Item label='邮箱' name='signEmail' rules={[{ required: true, message: '请输入邮箱！' }, { type: 'email', message: '请输入正确的邮箱！' }]}>
                             <Input placeholder='请输入邮箱' />
                         </Form.Item>
                         <Form.Item label='密码' name='signPassword' rules={[{ required: true, message: '请输入密码！' }]}>

@@ -1,12 +1,12 @@
 import React from 'react'
-import { loginUser } from '../cookie/cookie'
+import { LoginUser } from '../cookie/cookie'
 
 
 export default function PageIndex() {
-    const cookie = loginUser()
+    const cookie = LoginUser()
+    console.log(cookie)
     return (
         <div>
-            {cookie.loginUsername}
             index_page
         </div>
     )
