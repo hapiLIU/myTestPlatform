@@ -17,11 +17,9 @@ export default function Login() {
             case 'signUp':
                 console.log('注册')
                 console.log(`用户名：${e.signUsername}，密码：${e.signPassword}，邮箱：${e.signEmail}`)
-                console.log(await OnReg(e))
-                // if (await OnReg(e) == 1) { changeView('logIn') }
-                // if (await OnReg(e) === '0') {
-                //     console.log('12323')
-                // }
+                let a = await OnReg(e)
+                console.log(a)
+                if (a === 1) { setCurrentViewVal('logIn') }
                 break;
             case 'logIn':
                 // console.log('登录')

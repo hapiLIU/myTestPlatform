@@ -64,11 +64,30 @@ route.post("/reg", (req, res) => {
     let uemail = req.body.uemail;
     let sql = "insert into account (uid,uname,upwd,uemail,utype) value(null,?,?,?,'user')";
     pool.query(sql, [uname, upwd, uemail], (err, result) => {
-        if (result?.affectedRows > 0) {
-            res.send("1");
-        } else {
-            res.send("0");
-        }
+        // if (result?.affectedRows > 0) {
+        //     res.send("1");
+        // } else {
+        //     res.send("0");
+        // }
+        pool.query(sql, [uname, upwd, uemail], (err, result) => {
+            let obj = {};
+            if (result.affectedRows === 1) {
+                obj = {
+                    meta: {
+                        msg: "注册成功",
+                        status: 200,
+                    },
+                };
+            } else {
+                obj = {
+                    meta: {
+                        msg: "注册失败",
+                        status: 400,
+                    },
+                };
+            }
+            res.send(obj);
+        })
     });
 });
 //查看账号列表
@@ -77,4 +96,29 @@ route.get('/list', (req, res) => {
     pool.query(sql, (err, result) => {
         res.send(result);
     });
+})
+//删除用户
+route.delete('/del', (req, res) => {
+    let { id } = req.query;
+    let sql = `delete from account where uid=?`;
+    pool.query(sql, [id], (err, rs) => {
+        if (err) throw err;
+        let obj = {}
+        if (rs.affectedRows === 0) {
+            obj = {
+                meta: {
+                    msg: "删除失败",
+                    status: 400
+                },
+            };
+        } else {
+            obj = {
+                meta: {
+                    msg: "删除成功",
+                    status: 200,
+                },
+            };
+        }
+        res.send(obj)
+    })
 })
