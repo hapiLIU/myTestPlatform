@@ -44,7 +44,13 @@ export default function WorkBench() {
 
             return (
                 <div>
-                    2222
+                    <div style={{ width: 750, height: 850, border: '1px black solid', float: 'left' }}>
+                        暂未解决
+                    </div>
+                    <Button style={{ float: 'left', margin: '100px 37px' }}>执行代码</Button>
+                    <div style={{ width: 750, height: 850, border: '1px black solid', float: 'left' }}>
+                        暂未解决
+                    </div>
                 </div>
             )
         }
@@ -52,7 +58,7 @@ export default function WorkBench() {
 
             return (
                 <div>
-                    33333
+                    暂未解决
                 </div>
             )
         }

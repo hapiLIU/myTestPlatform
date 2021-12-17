@@ -3,6 +3,7 @@ import HomePage from './HomePage';
 import ChatRoom from './ChatRoom';
 import WorkBench from './WorkBench';
 import Share from './Share';
+import OWN from './OWN';
 import { LoginUser } from '../cookie/cookie'
 import { Layout, Menu } from 'antd';
 import { Link, Route, Switch, useLocation } from 'react-router-dom';
@@ -21,12 +22,11 @@ export default function PageIndex() {
     const BasicsLayout = () => {
         return (
             <Layout>
-                {/* <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}> */}
-                <Header style={{ width: '100%' }}>
+                <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
                     <div style={{ color: 'white', float: 'left' }}>这里是个LOGO</div>
                     {/* eslint-disable-next-line */}
-                    <a style={{ color: 'white', float: 'right', marginLeft: 100 }}>欢迎您！ {cookie.uname}</a>
-                    <Menu theme="dark" mode="horizontal" style={{ justifyContent: 'right' }} selectedKeys={[keys]}>
+                    <a href='/index/own' style={{ color: 'white', float: 'right', marginLeft: 100 }}>欢迎您！ {cookie.uname}</a>
+                    <Menu theme="dark" mode="horizontal" style={{ justifyContent: 'center' }} selectedKeys={[keys]}>
                         <Menu.Item key="homePage">
                             <Link to='/index'>首页简介</Link>
                         </Menu.Item>
@@ -41,7 +41,7 @@ export default function PageIndex() {
                         </Menu.Item>
                     </Menu>
                 </Header>
-                <Layout style={{ height: 900 }}>
+                <Layout style={{ height: 910, marginTop: '64px' }}>
                     <Switch>
                         <Route exact path='/index'>
                             <HomePage />
@@ -54,6 +54,9 @@ export default function PageIndex() {
                         </Route>
                         <Route exact path='/index/share'>
                             <Share />
+                        </Route>
+                        <Route exact path='/index/own'>
+                            <OWN />
                         </Route>
                     </Switch>
                 </Layout>

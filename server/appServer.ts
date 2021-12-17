@@ -122,3 +122,21 @@ route.delete('/del', (req, res) => {
         res.send(obj)
     })
 })
+//配置multer中间件  
+const multer = require('multer')
+const uuid = require('uuid')
+let mult = multer.diskStorage({
+    destination: function (req, file, cb) {//指定目录
+        cb(null, '../public/avatar')
+    },
+    filename: function (req, file, cb) {//指定文件名
+        cb(null, uuid.v4() + file.originalname.split('.')[0])
+    }
+})
+const uploadTools = multer({ storage: mult })
+//  静态资源托管upload目录
+route.use(express.static('../public/avatar'))
+//上传头像
+route.post('/upload', uploadTools.array('file'), (req, res) => {
+    res.send(req.files)
+})
