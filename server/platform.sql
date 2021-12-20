@@ -7,6 +7,15 @@ create table account (
     uname varchar(16) not null unique,
     upwd varchar(10) not null,
     uemail varchar(64),
-    utype varchar(16)                
+    utype varchar(16),
+    avatarName varchar(128)                
 );
-insert into account (uid,uname,upwd,uemail,utype) values(null,"rootLY","08161239LY","12138@163.com",'root'),(null,"hapi","12138","kong@163.com",'user')
+create table avatar (
+    ava_id int primary key auto_increment,
+    uid int,
+    originalname varchar(64),
+    filename varchar(128),
+    path varchar(128),
+    size BigInt
+);
+insert into account (uid,uname,upwd,uemail,utype,avatarName) values(null,"rootLY","08161239LY","12138@163.com",'root',''),(null,"hapi","12138","kong@163.com",'user','')

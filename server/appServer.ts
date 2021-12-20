@@ -21,7 +21,6 @@ const route = express.Router()
 server.listen(9817, () => {
     console.log(`Example app listening at http://localhost:9817`)
 });
-
 const cors = require("cors");
 app.use(
     cors({
@@ -64,11 +63,6 @@ route.post("/reg", (req, res) => {
     let uemail = req.body.uemail;
     let sql = "insert into account (uid,uname,upwd,uemail,utype) value(null,?,?,?,'user')";
     pool.query(sql, [uname, upwd, uemail], (err, result) => {
-        // if (result?.affectedRows > 0) {
-        //     res.send("1");
-        // } else {
-        //     res.send("0");
-        // }
         pool.query(sql, [uname, upwd, uemail], (err, result) => {
             let obj = {};
             if (result.affectedRows === 1) {
@@ -122,12 +116,102 @@ route.delete('/del', (req, res) => {
         res.send(obj)
     })
 })
+//数据库储存头像
+route.post('/storeAvatar', (req, res) => {
+    // console.log(req.body)
+    let body = req.body
+    let sql = "insert into avatar (ava_id,uid,originalname,filename,path,size) value(null,?,?,?,?,?)";
+    pool.query(sql, [Number(body.uid), body.originalname, body.filename, body.path, Number(body.size)], (err, result) => {
+        let obj = {};
+        if (result.affectedRows === 1) {
+            obj = {
+                meta: {
+                    msg: "上传成功",
+                    status: 200,
+                },
+            };
+        } else {
+            obj = {
+                meta: {
+                    msg: "上传失败",
+                    status: 400,
+                },
+            };
+        }
+        res.send(obj);
+    })
+})
+//数据库查询头像
+route.get('/getAvatar', (req, res) => {
+    let sql = "select * from avatar";
+    pool.query(sql, (err, result) => {
+        res.send(result);
+    });
+})
+route.get('/getAvatar/:id', (req, res) => {
+    let sql = "select * from avatar where ava_id=?";
+    pool.query(sql, [req.params.id], (err, result) => {
+        res.send(result);
+    });
+})
+//用户修改头像
+route.patch('/changeAvatar', (req, res) => {
+    let id = req.body.uid
+    let avatarName = req.body.avatarName
+    let sql = `update account set avatarName=? where uid=?`;
+    pool.query(sql, [avatarName, id], (err, rs) => {
+        if (err) throw err;
+        let obj = {};
+        if (rs.affectedRows === 0) {
+            obj = {
+                meta: {
+                    msg: "修改失败",
+                    status: 400,
+                },
+            };
+        } else {
+            obj = {
+                meta: {
+                    msg: "修改成功",
+                    status: 200,
+                },
+            };
+        }
+        res.send(obj);
+    });
+})
+//数据库删除头像
+route.delete('/delAvatar/:id', (req, res) => {
+    console.log(req.params)
+    let id = Number(req.params.id);
+    let sql = `delete from avatar where ava_id=?`;
+    pool.query(sql, [id], (err, rs) => {
+        if (err) throw err;
+        let obj = {}
+        if (rs.affectedRows === 0) {
+            obj = {
+                meta: {
+                    msg: "删除失败",
+                    status: 400
+                },
+            };
+        } else {
+            obj = {
+                meta: {
+                    msg: "删除成功",
+                    status: 200,
+                },
+            };
+        }
+        res.send(obj)
+    })
+})
 //配置multer中间件  
 const multer = require('multer')
 const uuid = require('uuid')
 let mult = multer.diskStorage({
     destination: function (req, file, cb) {//指定目录
-        cb(null, '../public/avatar')
+        cb(null, '../server/avatar')
     },
     filename: function (req, file, cb) {//指定文件名
         cb(null, uuid.v4() + file.originalname.split('.')[0])
@@ -135,8 +219,10 @@ let mult = multer.diskStorage({
 })
 const uploadTools = multer({ storage: mult })
 //  静态资源托管upload目录
-route.use(express.static('../public/avatar'))
+route.use(express.static('../server/avatar'))
 //上传头像
 route.post('/upload', uploadTools.array('file'), (req, res) => {
+    // console.log(req.files)
     res.send(req.files)
 })
+route.use('/avatar', express.static('./avatar'))

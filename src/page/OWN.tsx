@@ -1,16 +1,35 @@
-import { Avatar, Badge, Form, Image, Upload } from 'antd'
-import React, { useState } from 'react'
+import { Avatar, Badge, Button, Image, message, Upload } from 'antd'
+import React, { useEffect, useState } from 'react'
 import { UserOutlined, InboxOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import { LoginUser } from '../cookie/cookie';
 import Modal from 'antd/lib/modal/Modal';
 import axios from 'axios';
+import { stringify } from 'querystring';
+import ImgCrop from 'antd-img-crop';
+import { OnChangeAvatar } from '../cookie/cookie';
 const { Dragger } = Upload
 export default function OWN() {
     const cookie = LoginUser()
-    console.log(cookie)
     const [changeAvatar, setChangeAvatar] = useState(false)     //上传头像弹框
-
+    const [avatarList, setAvatarList]: any = useState([])       //获取头像列表
+    //确认头像更换
+    const finshChange = () => {
+        axios.get('http://localhost:9817/getAvatar').then(e => {
+            setAvatarList(e.data)
+        })
+        setChangeAvatar(false)
+    }
+    useEffect(() => {
+        let img = avatarList?.filter((e: any) => {
+            if (e.uid === cookie.uid) return e
+        })
+        let ava = img[img.length - 1]?.filename
+        if (ava !== undefined && ava !== '') {
+            OnChangeAvatar({ uid: cookie.uid, avatarName: ava })
+        }
+        return
+    }, [avatarList])
     return (
         <div style={{ width: '100%', height: '100%', backgroundColor: 'rgb(219 219 219)' }}>
             {/* <h1 style={{ textAlign: "center", lineHeight: '100px' }}><b>这里是Share</b></h1> */}
@@ -19,7 +38,7 @@ export default function OWN() {
                     <div style={{ width: 128, height: '100%', float: 'left' }}>
                         <Badge.Ribbon text={cookie?.utype == 'root' ? '管理员' : '普通用户'} placement='start' color={cookie?.utype == 'root' ? 'red' : ''} style={{ display: 'inline-block' }}>
                             {/* <Avatar size={128} icon={<UserOutlined />} /> */}
-                            <Image src='https://img0.baidu.com/it/u=2211870254,3716611573&fm=26&fmt=auto' style={{ height: 128, width: 128, borderRadius: '50%' }} preview={false} onClick={(e) => { console.log(e) }} />
+                            <Image src={cookie.avatarName === '' ? 'https://img0.baidu.com/it/u=2211870254,3716611573&fm=26&fmt=auto' : `http://localhost:9817/avatar/${cookie.avatarName}`} style={{ height: 128, width: 128, borderRadius: '50%' }} preview={false} onClick={(e) => { console.log(e) }} />
                         </Badge.Ribbon>
                     </div>
                     <div style={{ width: 200, height: '100%', float: 'left' }}>
@@ -30,44 +49,68 @@ export default function OWN() {
                             onCancel={() => { setChangeAvatar(false) }}
                             footer={null}
                         >
-                            <Dragger
-                                name='file'
-                                listType='picture'
-                                accept='.png,.gif,.jpg,.svg,.webp'
-                                action='http://localhost:9817/upload'
-                                maxCount={1}
-                                onChange={(info) => { console.log(info) }}
-                                withCredentials={true}
-                                progress={{
-                                    strokeColor: {
-                                        '0%': '#108ee9',
-                                        '100%': '#87d068',
-                                    },
-                                    strokeWidth: 3,
-                                    format: (percent: any) => `${parseFloat(percent?.toFixed(2))}%`,
-                                }}
-                                customRequest={(option) => {
-                                    const { action, file, onError, onSuccess } = option;
-                                    const formData = new FormData();
-                                    console.log(option)
-                                    console.log(file)
-                                    formData.append('file', file);
-                                    console.log(formData)
-                                    axios
-                                        .post(action, formData)
-                                        .then((resp) => {
-                                            onSuccess && onSuccess(resp.data, resp.request);
-                                        })
-                                        .catch(onError);
-                                }}
+                            <ImgCrop rotate
+                                modalTitle='裁剪图片'
+                                modalOk='完成'
+                                modalCancel='取消'
+                                shape='round'
                             >
-                                <p> <InboxOutlined /></p>
-                                <p >点击或拖动图片至此</p>
-                            </Dragger>
+                                <Dragger
+                                    style={{ marginTop: 20 }}
+                                    name='file'
+                                    listType='picture'
+                                    accept='.png,.gif,.jpg,.svg,.webp'
+                                    action='http://localhost:9817/upload'
+                                    maxCount={1}
+                                    withCredentials={true}
+                                    beforeUpload={(e) => {
+                                        const isLt2M = e.size / 1024 / 1024 < 2;
+                                        if (!isLt2M) {
+                                            message.error('Image must smaller than 2MB!');
+                                        }
+                                        return isLt2M;
+                                    }}
+                                    progress={{
+                                        strokeColor: {
+                                            '0%': '#108ee9',
+                                            '100%': '#87d068',
+                                        },
+                                        strokeWidth: 3,
+                                        format: (percent: any) => `${parseFloat(percent?.toFixed(2))}%`,
+                                    }}
+                                    customRequest={(option) => {
+                                        const { action, file, onError, onSuccess } = option;
+                                        const formData = new FormData();
+                                        formData.append('file', file);
+                                        console.log(formData)
+                                        axios
+                                            .post(action, formData)
+                                            .then((resp) => {
+                                                onSuccess && onSuccess(resp.data, resp.request);
+                                                let ava = resp.data[0]
+                                                ava['uid'] = cookie.uid
+                                                axios.post('http://localhost:9817/storeAvatar', stringify(ava)).then(aaa => {
+                                                    console.log(aaa)
+                                                })
+                                            })
+                                            .catch(onError);
+                                    }}
+                                >
+                                    <p> <InboxOutlined /></p>
+                                    <p >点击或拖动图片至此</p>
+                                </Dragger>
+                            </ImgCrop>
+                            <div style={{ textAlign: 'center', marginTop: 20 }}>
+                                <Button type="primary" style={{ marginRight: '20px' }} onClick={finshChange}>
+                                    确定
+                                </Button>
+                                <Button onClick={() => { setChangeAvatar(false) }}>
+                                    取消
+                                </Button>
+                            </div>
                         </Modal>
                     </div>
                 </div>
-
                 {/* <h1><b>基本信息</b></h1>
                 <Form
                     name='info'
