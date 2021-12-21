@@ -91,6 +91,12 @@ route.get('/list', (req, res) => {
         res.send(result);
     });
 })
+route.get('/list/:id', (req, res) => {
+    let sql = "select * from account where uid=?";
+    pool.query(sql, [req.params.id], (err, result) => {
+        res.send(result);
+    });
+})
 //删除用户
 route.delete('/del', (req, res) => {
     let { id } = req.query;

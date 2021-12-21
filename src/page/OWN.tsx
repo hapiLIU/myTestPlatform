@@ -1,18 +1,30 @@
 import { Avatar, Badge, Button, Image, message, Upload } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { UserOutlined, InboxOutlined } from '@ant-design/icons';
-import Meta from 'antd/lib/card/Meta';
 import { LoginUser } from '../cookie/cookie';
 import Modal from 'antd/lib/modal/Modal';
 import axios from 'axios';
 import { stringify } from 'querystring';
 import ImgCrop from 'antd-img-crop';
 import { OnChangeAvatar } from '../cookie/cookie';
+import { getAllUsers, initPageSlice } from './page.slice'
+import pageSelect from './page.selector'
+import { useAppDispatch, useAppSelector } from '../cookie/hooks';
+
+
 const { Dragger } = Upload
 export default function OWN() {
     const cookie = LoginUser()
+    const dispatch = useAppDispatch()
     const [changeAvatar, setChangeAvatar] = useState(false)     //上传头像弹框
     const [avatarList, setAvatarList]: any = useState([])       //获取头像列表
+    useEffect(() => {
+        dispatch(initPageSlice())
+    }, [])
+    const userAvatar = useAppSelector(pageSelect.selectUserList).filter((e: any) => {
+        if (e.uid === cookie.uid) return e
+    })[0]?.avatarName
+    console.log(userAvatar)
     //确认头像更换
     const finshChange = () => {
         axios.get('http://localhost:9817/getAvatar').then(e => {
@@ -38,7 +50,7 @@ export default function OWN() {
                     <div style={{ width: 128, height: '100%', float: 'left' }}>
                         <Badge.Ribbon text={cookie?.utype == 'root' ? '管理员' : '普通用户'} placement='start' color={cookie?.utype == 'root' ? 'red' : ''} style={{ display: 'inline-block' }}>
                             {/* <Avatar size={128} icon={<UserOutlined />} /> */}
-                            <Image src={cookie.avatarName === '' ? 'https://img0.baidu.com/it/u=2211870254,3716611573&fm=26&fmt=auto' : `http://localhost:9817/avatar/${cookie.avatarName}`} style={{ height: 128, width: 128, borderRadius: '50%' }} preview={false} onClick={(e) => { console.log(e) }} />
+                            <Image src={userAvatar === undefined ? cookie.avatarName === '' ? 'https://img0.baidu.com/it/u=2211870254,3716611573&fm=26&fmt=auto' : `http://localhost:9817/avatar/${cookie.avatarName}` : `http://localhost:9817/avatar/${userAvatar}`} style={{ height: 128, width: 128, borderRadius: '50%' }} preview={false} onClick={(e) => { console.log(e) }} />
                         </Badge.Ribbon>
                     </div>
                     <div style={{ width: 200, height: '100%', float: 'left' }}>
@@ -89,9 +101,7 @@ export default function OWN() {
                                                 onSuccess && onSuccess(resp.data, resp.request);
                                                 let ava = resp.data[0]
                                                 ava['uid'] = cookie.uid
-                                                axios.post('http://localhost:9817/storeAvatar', stringify(ava)).then(aaa => {
-                                                    console.log(aaa)
-                                                })
+                                                axios.post('http://localhost:9817/storeAvatar', stringify(ava))
                                             })
                                             .catch(onError);
                                     }}
@@ -132,7 +142,7 @@ export default function OWN() {
 
                     </Form.Item>
                 </Form> */}
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
