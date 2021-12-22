@@ -1,0 +1,592 @@
+[
+  {
+    "value": "北京市",
+    "label": "北京市",
+    "children": [
+      {
+        "value": "朝阳区",
+        "label": "朝阳区"
+      },
+      {
+        "value": "海淀区",
+        "label": "海淀区"
+      },
+      {
+        "value": "通州区",
+        "label": "通州区"
+      },
+      {
+        "value": "房山区",
+        "label": "房山区"
+      },
+      {
+        "value": "丰台区",
+        "label": "丰台区"
+      },
+      {
+        "value": "昌平区",
+        "label": "昌平区"
+      },
+      {
+        "value": "大兴区",
+        "label": "大兴区"
+      },
+      {
+        "value": "顺义区",
+        "label": "顺义区"
+      },
+      {
+        "value": "西城区",
+        "label": "西城区"
+      },
+      {
+        "value": "延庆县",
+        "label": "延庆县"
+      },
+      {
+        "value": "石景山区",
+        "label": "石景山区"
+      },
+      {
+        "value": "宣武区",
+        "label": "宣武区"
+      },
+      {
+        "value": "怀柔区",
+        "label": "怀柔区"
+      },
+      {
+        "value": "崇文区",
+        "label": "崇文区"
+      },
+      {
+        "value": "密云县",
+        "label": "密云县"
+      },
+      {
+        "value": "东城区",
+        "label": "东城区"
+      },
+      {
+        "value": "平谷区",
+        "label": "平谷区"
+      },
+      {
+        "value": "门头沟区",
+        "label": "门头沟区"
+      }
+    ]
+  },
+  {
+    "value": "广东省",
+    "label": "广东省",
+    "children": [
+      {
+        "value": "东莞市",
+        "label": "东莞市"
+      },
+      {
+        "value": "广州市",
+        "label": "广州市"
+      },
+      {
+        "value": "中山市",
+        "label": "中山市"
+      },
+      {
+        "value": "深圳市",
+        "label": "深圳市"
+      },
+      {
+        "value": "惠州市",
+        "label": "惠州市"
+      },
+      {
+        "value": "江门市",
+        "label": "江门市"
+      },
+      {
+        "value": "珠海市",
+        "label": "珠海市"
+      },
+      {
+        "value": "汕头市",
+        "label": "汕头市"
+      },
+      {
+        "value": "佛山市",
+        "label": "佛山市"
+      },
+      {
+        "value": "湛江市",
+        "label": "湛江市"
+      },
+      {
+        "value": "河源市",
+        "label": "河源市"
+      },
+      {
+        "value": "肇庆市",
+        "label": "肇庆市"
+      },
+      {
+        "value": "清远市",
+        "label": "清远市"
+      },
+      {
+        "value": "潮州市",
+        "label": "潮州市"
+      },
+      {
+        "value": "韶关市",
+        "label": "韶关市"
+      },
+      {
+        "value": "揭阳市",
+        "label": "揭阳市"
+      },
+      {
+        "value": "阳江市",
+        "label": "阳江市"
+      },
+      {
+        "value": "梅州市",
+        "label": "梅州市"
+      },
+      {
+        "value": "云浮市",
+        "label": "云浮市"
+      },
+      {
+        "value": "茂名市",
+        "label": "茂名市"
+      },
+      {
+        "value": "汕尾市",
+        "label": "汕尾市"
+      }
+    ]
+  },
+  {
+    "value": "山东省",
+    "label": "山东省",
+    "children": [
+      {
+        "value": "济南市",
+        "label": "济南市"
+      },
+      {
+        "value": "青岛市",
+        "label": "青岛市"
+      },
+      {
+        "value": "临沂市",
+        "label": "临沂市"
+      },
+      {
+        "value": "济宁市",
+        "label": "济宁市"
+      },
+      {
+        "value": "菏泽市",
+        "label": "菏泽市"
+      },
+      {
+        "value": "烟台市",
+        "label": "烟台市"
+      },
+      {
+        "value": "淄博市",
+        "label": "淄博市"
+      },
+      {
+        "value": "泰安市",
+        "label": "泰安市"
+      },
+      {
+        "value": "潍坊市",
+        "label": "潍坊市"
+      },
+      {
+        "value": "日照市",
+        "label": "日照市"
+      },
+      {
+        "value": "威海市",
+        "label": "威海市"
+      },
+      {
+        "value": "滨州市",
+        "label": "滨州市"
+      },
+      {
+        "value": "东营市",
+        "label": "东营市"
+      },
+      {
+        "value": "聊城市",
+        "label": "聊城市"
+      },
+      {
+        "value": "德州市",
+        "label": "德州市"
+      },
+      {
+        "value": "莱芜市",
+        "label": "莱芜市"
+      },
+      {
+        "value": "枣庄市",
+        "label": "枣庄市"
+      }
+    ]
+  },
+  {
+    "value": "江苏省",
+    "label": "江苏省",
+    "children": [
+      {
+        "value": "苏州市",
+        "label": "苏州市"
+      },
+      {
+        "value": "徐州市",
+        "label": "徐州市"
+      },
+      {
+        "value": "盐城市",
+        "label": "盐城市"
+      },
+      {
+        "value": "无锡市",
+        "label": "无锡市"
+      },
+      {
+        "value": "南京市",
+        "label": "南京市"
+      },
+      {
+        "value": "南通市",
+        "label": "南通市"
+      },
+      {
+        "value": "连云港市",
+        "label": "连云港市"
+      },
+      {
+        "value": "常州市",
+        "label": "常州市"
+      },
+      {
+        "value": "镇江市",
+        "label": "镇江市"
+      },
+      {
+        "value": "扬州市",
+        "label": "扬州市"
+      },
+      {
+        "value": "淮安市",
+        "label": "淮安市"
+      },
+      {
+        "value": "泰州市",
+        "label": "泰州市"
+      },
+      {
+        "value": "宿迁市",
+        "label": "宿迁市"
+      }
+    ]
+  },
+  {
+    "value": "河南省",
+    "label": "河南省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "上海市",
+    "label": "上海市",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "河北省",
+    "label": "河北省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "浙江省",
+    "label": "浙江省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "香港特别行政区",
+    "label": "香港特别行政区",
+    "children": []
+  },
+  {
+    "value": "陕西省",
+    "label": "陕西省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "湖南省",
+    "label": "湖南省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "重庆市",
+    "label": "重庆市",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "福建省",
+    "label": "福建省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "天津市",
+    "label": "天津市",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "云南省",
+    "label": "云南省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "四川省",
+    "label": "四川省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "广西壮族自治区",
+    "label": "广西壮族自治区",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "安徽省",
+    "label": "安徽省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "海南省",
+    "label": "海南省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "江西省",
+    "label": "江西省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "湖北省",
+    "label": "湖北省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "山西省",
+    "label": "山西省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "辽宁省",
+    "label": "辽宁省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "台湾省",
+    "label": "台湾省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "黑龙江",
+    "label": "黑龙江",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "内蒙古自治区",
+    "label": "内蒙古自治区",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "澳门特别行政区",
+    "label": "澳门特别行政区",
+    "children": []
+  },
+  {
+    "value": "贵州省",
+    "label": "贵州省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "甘肃省",
+    "label": "甘肃省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "青海省",
+    "label": "青海省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "新疆维吾尔自治区",
+    "label": "新疆维吾尔自治区",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "西藏区",
+    "label": "西藏区",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "吉林省",
+    "label": "吉林省",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  {
+    "value": "宁夏回族自治区",
+    "label": "宁夏回族自治区",
+    "children": [
+      {
+        "value": "",
+        "label": ""
+      }
+    ]
+  }
+]

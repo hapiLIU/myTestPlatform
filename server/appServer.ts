@@ -160,32 +160,6 @@ route.get('/getAvatar/:id', (req, res) => {
         res.send(result);
     });
 })
-//用户修改头像
-route.patch('/changeAvatar', (req, res) => {
-    let id = req.body.uid
-    let avatarName = req.body.avatarName
-    let sql = `update account set avatarName=? where uid=?`;
-    pool.query(sql, [avatarName, id], (err, rs) => {
-        if (err) throw err;
-        let obj = {};
-        if (rs.affectedRows === 0) {
-            obj = {
-                meta: {
-                    msg: "修改失败",
-                    status: 400,
-                },
-            };
-        } else {
-            obj = {
-                meta: {
-                    msg: "修改成功",
-                    status: 200,
-                },
-            };
-        }
-        res.send(obj);
-    });
-})
 //数据库删除头像
 route.delete('/delAvatar/:id', (req, res) => {
     console.log(req.params)

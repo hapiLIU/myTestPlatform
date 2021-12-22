@@ -41,16 +41,6 @@ export const OnReg = async (user: any) => {
     return result
 }
 
-//用户修改头像
-export const OnChangeAvatar = async (user: any) => {
-    let result = await new Promise((resolve) => {
-        axios.patch('http://localhost:9817/changeAvatar', `uid=${user.uid}&avatarName=${user.avatarName}`).then(res => {
-            resolve(res.data)
-        })
-    })
-    return result
-}
-
 // 用户登出，删除cookie
 export const Logout = () => {
     cookie.remove('userInfo')
