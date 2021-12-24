@@ -63,25 +63,23 @@ route.post("/reg", (req, res) => {
     let uemail = req.body.uemail;
     let sql = "insert into account (uid,uname,upwd,uemail,utype) value(null,?,?,?,'user')";
     pool.query(sql, [uname, upwd, uemail], (err, result) => {
-        pool.query(sql, [uname, upwd, uemail], (err, result) => {
-            let obj = {};
-            if (result.affectedRows === 1) {
-                obj = {
-                    meta: {
-                        msg: "注册成功",
-                        status: 200,
-                    },
-                };
-            } else {
-                obj = {
-                    meta: {
-                        msg: "注册失败",
-                        status: 400,
-                    },
-                };
-            }
-            res.send(obj);
-        })
+        let obj = {};
+        if (result.affectedRows === 1) {
+            obj = {
+                meta: {
+                    msg: "注册成功",
+                    status: 200,
+                },
+            };
+        } else {
+            obj = {
+                meta: {
+                    msg: "注册失败",
+                    status: 400,
+                },
+            };
+        }
+        res.send(obj);
     });
 });
 //查看账号列表
@@ -162,7 +160,6 @@ route.get('/getAvatar/:id', (req, res) => {
 })
 //数据库删除头像
 route.delete('/delAvatar/:id', (req, res) => {
-    console.log(req.params)
     let id = Number(req.params.id);
     let sql = `delete from avatar where ava_id=?`;
     pool.query(sql, [id], (err, rs) => {
@@ -185,6 +182,60 @@ route.delete('/delAvatar/:id', (req, res) => {
         }
         res.send(obj)
     })
+})
+//个人基本信息列表
+route.get('/inforList', (req, res) => {
+    pool.query('select * from information', (err, result) => {
+        res.send(result)
+    })
+})
+//配置个人基本信息（新增）
+route.post('/addInfor', (req, res) => {
+    let sql = "insert into information (id,uid,nickname,Gender,introduce,location,birth) value(null,?,?,?,?,?,?)";
+    pool.query(sql, [req.body.uid, req.body.nickname, req.body.Gender, req.body.introduce, req.body.location, req.body.birth], (err, result) => {
+        let obj = {};
+        if (result.affectedRows === 1) {
+            obj = {
+                meta: {
+                    msg: "新增成功",
+                    status: 200,
+                },
+            };
+        } else {
+            obj = {
+                meta: {
+                    msg: "新增失败",
+                    status: 400,
+                },
+            };
+        }
+        res.send(obj);
+    });
+})
+//修改个人基本信息
+route.put('/changeInfor', (req, res) => {
+    let { id, uid, nickname, Gender, birth, location, introduce } = req.body;
+    let sql = `update information set uid=?,nickname=?,Gender=?,birth=?,location=?,introduce=? where id=?`;
+    pool.query(sql, [uid, nickname, Gender, birth, location, introduce, id], (err, rs) => {
+        if (err) throw err;
+        let obj = {};
+        if (rs.affectedRows === 0) {
+            obj = {
+                meta: {
+                    msg: "修改失败",
+                    status: 400,
+                },
+            };
+        } else {
+            obj = {
+                meta: {
+                    msg: "修改成功",
+                    status: 200,
+                },
+            };
+        }
+        res.send(obj);
+    });
 })
 //配置multer中间件  
 const multer = require('multer')

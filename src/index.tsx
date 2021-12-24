@@ -6,14 +6,21 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import { store } from './cookie/store';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN' // 引入语言包
+import moment from 'moment';
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn') // 注意这里设置 moment 必须放在有 import 的后面。
 
 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <ConfigProvider locale={zhCN}>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </ConfigProvider>
     </Router>
   </Provider>,
   document.getElementById('root')

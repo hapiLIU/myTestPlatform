@@ -9,10 +9,15 @@ export const selectAvatarList = createSelector(
     selectPage,
     (page) => page.avatarList
 )
+export const selectInforList = createSelector(
+    selectPage,
+    (page) => page.inforList
+)
 const exportObjects = {
     selectPage,
     selectUserList,
-    selectAvatarList
+    selectAvatarList,
+    selectInforList
 }
 
 export default exportObjects

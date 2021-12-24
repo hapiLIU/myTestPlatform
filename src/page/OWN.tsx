@@ -6,10 +6,10 @@ import Modal from 'antd/lib/modal/Modal';
 import axios from 'axios';
 import { stringify } from 'querystring';
 import ImgCrop from 'antd-img-crop';
-import { getAllUsers, initPageSlice } from './page.slice'
+import { addInfor, changeInfor, getAllUsers, initPageSlice } from './page.slice'
 import pageSelect from './page.selector'
 import { useAppDispatch, useAppSelector } from '../cookie/hooks';
-import locale from 'antd/es/date-picker/locale/zh_CN';
+import moment from 'moment';
 const { TextArea } = Input;
 const { Option } = Select;
 const { Dragger } = Upload
@@ -28,10 +28,44 @@ export default function OWN() {
 
     //基本信息
     const [isEdit, setIsEdit] = useState(false)
-    const china = require('../china/china.json')
-    console.log(china)
+    const china = require('../china/china.json')    //引入省市区json文件
+    const information = useAppSelector(pageSelect.selectInforList).filter((e: any) => {
+        if (e.uid === cookie.uid) return e
+    })
+    console.log(information)
+    const formValue = information.map((e: any) => {
+        return { nickname: e.nickname, Gender: e.Gender, introduce: e.introduce, location: e.location.split('/'), birth: moment(e.birth) }
+    })
+    const finshEdit = (e: any) => {
+        if (!cookie.uid) { return }
+        if (information.length == 0) {
+            let result = {
+                uid: Number(cookie.uid),
+                Gender: e.Gender ? e.Gender : "",
+                birth: e.birth ? moment(e.birth).format('YYYY-MM-DD') : "",
+                introduce: e.introduce ? e.introduce : "",
+                location: e.location ? e.location.join('/') : "",
+                nickname: e.nickname ? e.nickname : ""
+            }
+            dispatch(addInfor(result))
+        } else {
+            let result = {
+                id: information[0]?.id,
+                uid: Number(cookie.uid),
+                Gender: e.Gender,
+                birth: e.birth !== null ? moment(e.birth).format('YYYY-MM-DD') : information[0].birth,
+                introduce: e.introduce !== '' ? e.introduce : information[0].introduce,
+                location: e.location.length !== 0 ? e.location.join('/') : information[0].location,
+                nickname: e.nickname !== '' ? e.nickname : information[0].nickname
+            }
+            dispatch(changeInfor(result))
+        }
+        dispatch(initPageSlice())
+        setIsEdit(false)
+    }
+
     return (
-        <div style={{ width: '100%', height: '100%', backgroundColor: 'rgb(242 242 242)' }}>
+        <div style={{ width: '100%', backgroundColor: 'rgb(242 242 242)' }}>
             <div style={{ width: 1000, height: '100%', margin: '0 auto', backgroundColor: 'rgb(242 242 242)', padding: '50px', paddingTop: 10 }}>
                 <div style={{ height: 208, backgroundColor: 'rgb(255 255 255)', padding: '40px 40px' }}>
                     <div style={{ width: 128, height: '100%', float: 'left' }}>
@@ -104,36 +138,36 @@ export default function OWN() {
                         </Modal>
                     </div>
                 </div>
-                <Descriptions title="基本信息" style={{ marginTop: 10, backgroundColor: 'rgb(255 255 255)', padding: '40px 40px' }} labelStyle={{ width: 150, textAlign: 'center' }} bordered extra={<Button type="primary" onClick={() => setIsEdit(true)}>编辑</Button>}>
-                    <Descriptions.Item label="用户昵称" span={3}>1</Descriptions.Item>
-                    <Descriptions.Item label="用户ID" span={3}>{cookie.uname}</Descriptions.Item>
-                    <Descriptions.Item label="性别" span={3}>1</Descriptions.Item>
-                    <Descriptions.Item label="出生日期" span={3}>1</Descriptions.Item>
-                    <Descriptions.Item label="所在地区" span={3}>1</Descriptions.Item>
-                    <Descriptions.Item label="个人简介" span={3}>1</Descriptions.Item>
+                <Descriptions title="基本信息" style={{ marginTop: 10, backgroundColor: 'rgb(255 255 255)', padding: '40px 40px' }} labelStyle={{ width: 150, textAlign: 'center' }} bordered extra={<Button type="primary" onClick={() => setIsEdit(true)}>修改</Button>}>
+                    <Descriptions.Item label="用户昵称" span={3}>{information[0]?.nickname}</Descriptions.Item>
+                    <Descriptions.Item label="用&nbsp;户&nbsp;I&nbsp;D" span={3}>{cookie.uname}</Descriptions.Item>
+                    <Descriptions.Item label="性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别" span={3}>{information[0]?.Gender}</Descriptions.Item>
+                    <Descriptions.Item label="出生日期" span={3}>{information[0]?.birth}</Descriptions.Item>
+                    <Descriptions.Item label="所在地区" span={3}>{information[0]?.location}</Descriptions.Item>
+                    <Descriptions.Item label="个人简介" span={3}>{information[0]?.introduce}</Descriptions.Item>
                 </Descriptions>
                 <Modal
                     visible={isEdit}
                     footer={null}
                     onCancel={() => setIsEdit(false)}
                 >
-                    <Form name='infor' style={{ marginTop: 20 }} labelCol={{ span: 5 }}>
-                        <Form.Item label='用户昵称'>
+                    <Form name='infor' style={{ marginTop: 20 }} labelCol={{ span: 5 }} onFinish={finshEdit} initialValues={formValue[0]}>
+                        <Form.Item label='用户昵称' name='nickname'>
                             <Input placeholder='请输入昵称' />
                         </Form.Item>
-                        <Form.Item label='性别'>
-                            <Select defaultValue="1" style={{ width: 80 }}>
-                                <Option value="1">男</Option>
-                                <Option value="0">女</Option>
+                        <Form.Item label='性别' name="Gender">
+                            <Select style={{ width: 80 }}>
+                                <Option value="男">男</Option>
+                                <Option value="女">女</Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item label='出生日期'>
-                            <DatePicker locale={locale} />
+                        <Form.Item label='出生日期' name="birth">
+                            <DatePicker />
                         </Form.Item>
-                        <Form.Item label='所在地区'>
-                            <Cascader placeholder='请选择所在地区' />
+                        <Form.Item label='所在地区' name="location">
+                            <Cascader options={china} placeholder='请选择所在地区' />
                         </Form.Item>
-                        <Form.Item label='个人简介'>
+                        <Form.Item label='个人简介' name="introduce">
                             <TextArea placeholder='简单介绍自己，让更多人了解你' />
                         </Form.Item>
                         <Form.Item style={{ textAlign: 'center' }}>
@@ -146,27 +180,12 @@ export default function OWN() {
                         </Form.Item>
                     </Form>
                 </Modal>
-                {/* <h1><b>基本信息</b></h1>
-                <Form
-                    name='info'
+                <Descriptions title="账号设置（功能暂未开发）" style={{ marginTop: 10, backgroundColor: 'rgb(255 255 255)', padding: '40px 40px' }} labelStyle={{ width: 150, textAlign: 'center' }} bordered contentStyle={{ textAlign: 'right' }} extra={<Button type="primary" onClick={() => console.log('账号设置')}>修改</Button>}>
+                    <Descriptions.Item label="密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码" span={3}><a>修改密码</a></Descriptions.Item>
+                    <Descriptions.Item label="邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱" span={3}>{cookie.uemail}<a style={{ marginLeft: 20 }}>修改邮箱</a></Descriptions.Item>
+                    <Descriptions.Item label="账号注销" span={3}><a>立即注销</a></Descriptions.Item>
+                </Descriptions>
 
-                >
-                    <Form.Item name='portrait'>
-
-                    </Form.Item>
-                    <Form.Item name='nickName' label='昵称'>
-
-                    </Form.Item>
-                    <Form.Item name='userName' label='账号'>
-
-                    </Form.Item>
-                    <Form.Item name='setUserPwd' label='修改密码'>
-
-                    </Form.Item>
-                    <Form.Item name='intro' label='个人简介'>
-
-                    </Form.Item>
-                </Form> */}
             </div >
         </div >
     )
